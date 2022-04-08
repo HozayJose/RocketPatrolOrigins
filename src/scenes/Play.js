@@ -4,12 +4,12 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('starfield','./assets/starfield.png');
+        this.load.image('starfield','assets/starfield.png');
     }
 
     create() {
         //starfield background 
-        this.starfieldBG = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
+        this.starfield = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
 
         //green rectangle
         this.add.rectangle(0, borderPadding + borderUIsize, game.config.width, borderUIsize*2, 0x00FF00).setOrigin(0,0);
@@ -23,6 +23,6 @@ class Play extends Phaser.Scene {
     }
 
     udpate() {
-        this.starfieldBG.tilePositionX -= 4;
+        this.starfield.tilePositionX -= 4;
     }
 }

@@ -3,6 +3,10 @@ class Play extends Phaser.Scene {
         super("play");
     }
 
+    preload() {
+        this.load.image('starfield','assets/starfield.png');
+    }
+
     create() {
         //green rectangle
         this.add.rectangle(0, borderPadding + borderUIsize, game.config.width, borderUIsize*2, 0x00FF00).setOrigin(0,0);

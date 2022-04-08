@@ -4,6 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(200,100,"WANNA PLAYYYYY??!!! LETS PLAY!!")
+        //green rectangle
+        this.add.rectangle(0, borderPadding + borderUIsize, game.config.width, borderUIsize*2, 0x00FF00).setOrigin(0,0);
     }
 }

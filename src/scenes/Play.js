@@ -19,13 +19,18 @@ class Play extends Phaser.Scene {
     
         //white borders for background(x, y, width, height, color)
         this.add.rectangle(0,0, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(0, game.config.height - borderUIsize, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0 ,0);
-        this.add.rectangle(0, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
-        this.add.rectangle(game.config.width - borderUIsize, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
+        this.add.rectangle(0, game.config.height - borderUIsize, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0,0);
+        this.add.rectangle(0, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0,0);
+        this.add.rectangle(game.config.width - borderUIsize, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0,0);
     
         //add the rocket(this, x, y, name)
         this.p1rocket = new Rocket(this, game.config.width/2, game.config.height - borderUIsize - borderPadding, 'rocket').setOrigin(0.5,0);
     
+        //adding spaceships 3x (currentScene, x, y pos, keyName, frameNumb, custom parameter)
+        this.ship01 = new Spaceship(this, game.config.width + borderUIsize*6, borderUIsize*4, 'spaceship', 0, 30).setOrigin(0,0);
+        this.ship02 = new Spaceship(this, game.config.width + borderUIsize*3, borderUIsize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
+        this.ship03 = new Spaceship(this, game.config.width, borderUIsize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+
         //define key binds
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -34,8 +39,15 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        //moves the bg sprite right
         this.starfield.tilePositionX -= 4;
 
+        //updates rocket pos and action
         this.p1rocket.update();
+
+        //updates ship movement
+        this.ship01.update();
+        this.ship02.update();
+        this.ship03.update();
     }
 }

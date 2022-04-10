@@ -25,7 +25,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
             this.isFiring = true;
             //console.log("fire");
         }
-        //after firing rocket
+        //if rocket fired, move up
         if(this.isFiring && this.y >= borderUIsize*3 + borderPadding) {
             this.y -= this.moveSpeed;
         }

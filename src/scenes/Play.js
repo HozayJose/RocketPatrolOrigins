@@ -47,19 +47,55 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
             frameRate: 30
         });
+
+        //initialize score
+        this.p1Score = 0;
+
+        //display score
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.scoreLeft = this.add.text(borderUIsize + borderPadding, borderUIsize + borderPadding*2, this.p1Score, scoreConfig);
+    
+        //Game Over Flag
+        this.gameOver = false;
+
+        //one minute clock
+        scoreConfig.fixedWidth = 0,
+        this.clock = this.time.delayedCall(60000, () => {
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
+            this.gameOver = true;
+        }, null, this);
     }
 
     update() {
+        //check key input for restart
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.scene.restart();
+        }
+
         //moves the bg sprite right
         this.starfield.tilePositionX -= 4;
 
-        //updates rocket pos and action
-        this.p1rocket.update();
+        if(!this.gameOver) {
+            //updates rocket pos and action
+            this.p1rocket.update();
 
-        //updates ship movement
-        this.ship01.update();
-        this.ship02.update();
-        this.ship03.update();
+            //updates ship movement
+            this.ship01.update();
+            this.ship02.update();
+            this.ship03.update();
+        }
 
         //checking rocket to ship collisions
         if(this.checkCollision(this.p1rocket,this.ship03)) {
@@ -97,5 +133,8 @@ class Play extends Phaser.Scene {
             ship.alpha = 1;
             boom.destroy();
         });
+        //score add and repaint
+        this.p1Score += ship.points;
+        this.scoreLeft.text = this.p1Score;
     }
 }

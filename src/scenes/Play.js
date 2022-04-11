@@ -8,6 +8,9 @@ class Play extends Phaser.Scene {
         this.load.image('rocket','assets/rocket.png');
         this.load.image('spaceship','assets/spaceship.png');
         this.load.image('starfield','assets/starfield.png');
+
+        //loading sprite sheets/animations(name, fileLocation, parameters)
+        this.load.spritesheet('explosion', 'assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
@@ -36,6 +39,14 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
+        //anim config
+        this.anims.create({
+            key: 'explode',
+            //generate frames by looking at spritesheet
+            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
+            frameRate: 30
+        });
     }
 
     update() {
@@ -53,15 +64,15 @@ class Play extends Phaser.Scene {
         //checking rocket to ship collisions
         if(this.checkCollision(this.p1rocket,this.ship03)) {
             this.p1rocket.reset();
-            this.ship03.reset();
+            this.shipExplode(this.ship03);
         }
         if(this.checkCollision(this.p1rocket,this.ship02)) {
             this.p1rocket.reset();
-            this.ship02.reset();
+            this.shipExplode(this.ship02);
         }
         if(this.checkCollision(this.p1rocket,this.ship01)) {
             this.p1rocket.reset();
-            this.ship01.reset();
+            this.shipExplode(this.ship01)
         }
     }
 
@@ -72,5 +83,19 @@ class Play extends Phaser.Scene {
         } else {
             return false;
         }
+    };
+
+
+    shipExplode(ship) {
+        //temporarily hides a ship when hit
+        ship.alpha = 0;
+        //creates the explosion at hit location
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0,0);
+        boom.anims.play('explode');
+        boom.on('animationcomplete', () => {
+            ship.reset();
+            ship.alpha = 1;
+            boom.destroy();
+        });
     }
 }
